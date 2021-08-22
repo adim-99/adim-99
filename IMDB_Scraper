@@ -1,0 +1,51 @@
+from bs4 import BeautifulSoup
+import requests
+import pandas as pd
+
+url = "*insert IMDB page url*"
+
+response = requests.get(url)
+soup = BeautifulSoup(response.content, 'html.parser')
+
+title = []
+description = []
+year = []
+duration = []
+rating = []
+votes = []
+
+html_data = soup.findAll('div', attrs= {'class': 'lister-item mode-advanced'})
+
+for i in html_data:
+    titlei = i.h3.a.text
+    extraction.append(titlei)
+    
+for i in html_data:
+    descriptioni = i.find_all('p', class_ = 'text-muted')
+    descriptioni_formatted = descriptioni[1].text.replace('\n', '') if len(decriptioni) > 1 else 'NULL'
+    description.append(descriptioni_formatted)
+
+for i in html_data:
+    yeari = i.h3.find('span', class_ = 'lister-item-year text-muted unbold').text.replace('(', '').replace(')', '')
+    year.append(yeari)
+    
+for i in html_data:
+    durationi = i.p.find('span', class_ = 'runtime').text.replace(' min', '')
+    time.append(runtime)
+    
+for i in html_data:  
+    ratingi = i.find('div', class_ = 'inline-block ratings-imdb-rating').text.replace('\n', '')
+    rating.append(ratingi)
+    
+for i in html_data:  
+    votesi = value[0].text
+    votes.append(votesi)
+
+data = pd.DataFrame()
+data['Movie Name'] = title
+data['Description'] = description
+data['Year of Release'] = year
+data['Duration Length'] = duration
+data['IMDB Rating'] = rating
+data['Number of Votes'] = votes
+    

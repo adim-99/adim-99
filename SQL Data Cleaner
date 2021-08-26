@@ -1,0 +1,100 @@
+/*
+Template I use for cleaning data using SQL 
+*/
+
+
+select *
+from table
+
+--------------------------------------------------------------------------------------------------------------------------
+
+-- Standardise Date Format
+
+
+select Date_col, convert(Date,Date_col)
+From table
+
+# Often useful for American data that utilises American date formats such as MM/DD/YYYY
+# Changing it to DD/MM/YYYY across the database avoids confusion, particularly during the ETL section
+
+update table
+set Date_col = convert(Date,SaleDate)
+
+# also another option is to use the getdate() function that automatically inserts the date at the time it was filled
+# this can be supplemented with the default function that by default inserts the getdate() regardless of other entries
+
+create table person (
+    person_id int primary key
+    join_date date default getdate()
+)
+
+# functions such as now(), sysdate(), current_date() can be used 
+# also can be used with their own parameters such as now(3) going from 2021-08-26 07:42:53 to 2021-08-26 07:42:53.234 to add additional microseconds if necessary
+
+--------------------------------------------------------------------------------------------------------------------------
+
+-- Standardise Decimal Points for Numerical Columns
+
+select numerical_cols
+  cast(numerical_cols) end as decimal(10, 2)  # have 10 max digits and end with 2 decimal places eg. 254.39
+
+
+--------------------------------------------------------------------------------------------------------------------------
+
+-- Create Constraints
+
+create table person (
+    person_id int primary key
+    gender varchar(1) constraint Not_indicated_as_M_or_F check (gender in ('M', 'F'))
+)
+
+# example where you may need to ensure the data filled is specific to avoid messy data
+
+
+--------------------------------------------------------------------------------------------------------------------------
+
+-- Remove Duplicates
+
+select *
+from table as a, table as b
+where a.id != b.id and a.other_cols = b.other_cols
+
+
+
+---------------------------------------------------------------------------------------------------------
+
+-- Delete Unused Columns
+
+select count(ID)    # count how many of the actual rows are null compared to how many rows there are
+from table
+where potential_col_with_missing_data is not NULL
+
+# a general rule of thumb is if there is over 60% of missing data, there is no use (most of the times) of that column in you data analysis
+
+select *
+from table
+
+
+alter table 'table'
+drop colum a, b, c, etc.
+
+---------------------------------------------------------------------------------------------------------
+
+-- Alter columns with added information
+
+create trigger new_marks
+before insert
+on student
+for each row
+set new.marks = new.marks + 7
+
+
+# case statements can also be harnessed after the data has already been entered
+
+case
+  when sal > 120k then promo = "no"
+  when sal > 90k then promo = "maybe"
+  when sal > 60k and exp > 2 = "yes"
+
+
+

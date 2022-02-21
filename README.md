@@ -1,6 +1,6 @@
 - 👋 Hi, I’m @adim-99
-- 👀 I’m interested in Data Analytics
-- 🌱 I’m currently learning about Machine Learning
+- 👀 I’m interested in Data Analytics and Statistics
+- 🌱 I’m currently learning about MERN Stack
 - 📫 You can reach me at adityamukherjee1999@gmail.com
 
 <!---
